@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "@babel/plugin-transform-class-properties": "^7.25.9",
-    "@mui/material": "^6.4.8",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.10",
     "nvm": "^0.0.4",
     "react-router-dom": "^7.4.0"
   }

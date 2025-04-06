@@ -10,7 +10,7 @@ export default class HomePage extends Component{
 
     render(){
         return (
-            <Router basename='/'>
+            <Router basename='frontend/'>
                 <Routes>
                     <Route exact path='/' element={<p>This is the homepage</p>} />
                     <Route path='/join' element={<RoomJoinPage />} />
