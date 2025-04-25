@@ -10,6 +10,7 @@ class Room extends Component {
             guestCanPause: false,
             isHost: false,
         };
+        this.roomCode = this.props.match.params.roomCode;
     }
 
     render(){
