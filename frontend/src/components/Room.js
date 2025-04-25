@@ -10,7 +10,6 @@ class Room extends Component {
             guestCanPause: false,
             isHost: false,
         };
-        this.roomCode = this.props.match.params.roomCode;
     }
 
     render(){
@@ -28,5 +27,5 @@ const RoomWrapper = () => {
     const { roomCode } = useParams();
     return <Room roomCode={roomCode} />;
 };
-  
+
 export default RoomWrapper;
