@@ -10,6 +10,19 @@ class Room extends Component {
             guestCanPause: false,
             isHost: false,
         };
+        this.getRoomDetails();
+    }
+
+    getRoomDetails(){
+        fetch('/api/get-room' + '?code=' + this.props.roomCode)
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({
+                    votesToSkip: data.votes_to_skip,
+                    guestCanPause: data.guest_can_pause,
+                    isHost: data.is_host,
+                })
+            });
     }
 
     render(){

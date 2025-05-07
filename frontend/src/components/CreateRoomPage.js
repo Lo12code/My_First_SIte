@@ -5,14 +5,13 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { Divider, FormLabel } from '@mui/material';
 
 
-export default class CreateRoomPage extends Component{
+class CreateRoomPage extends Component{
     defaultVotes = 2;
 
     constructor(props){
@@ -47,7 +46,10 @@ export default class CreateRoomPage extends Component{
                 guest_can_pause: this.state.guestCanPause,
             }),
         };
-        fetch('/api/create-room', requestOptions).then((response) => response.json()).then((data) => console.log(data));
+        fetch('/api/create-room', requestOptions)
+            .then((response) => response.json())
+            .then((data) => this.props.navigate('/room/' + data.code))
+            .catch((error) => console.error("Error creating room:", error));
     }
 
     render(){
@@ -107,3 +109,11 @@ export default class CreateRoomPage extends Component{
         );
     }
 }
+
+
+const CreateRoomPageWrapper = () => {
+    const navigate = useNavigate();
+    return <CreateRoomPage navigate={navigate} />;
+};
+
+export default CreateRoomPageWrapper;
