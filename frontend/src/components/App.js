@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { createRoot } from "react-dom/client";
-import HomePage from './HomePage';
-
+import HomePageWrapper from './HomePage';
+import {BrowserRouter as Router} from 'react-router-dom';
 
 export default class App extends Component {
     constructor(props){
@@ -10,7 +10,9 @@ export default class App extends Component {
 
     render() {
         return (<div className='center'>
-            <HomePage />
+            <Router basename='frontend/'>
+            <HomePageWrapper />
+            </Router>
         </div>);
     }
 
