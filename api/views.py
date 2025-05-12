@@ -91,6 +91,3 @@ class LeaveRoomView(APIView):
                 room.delete()
         
         return Response({'Message': 'Success'}, status=status.HTTP_200_OK)
-
-class SetCurrentSessionRoomView():
-    pass

@@ -81,10 +81,10 @@ class Room extends Component {
 
 };
 
-const RoomWrapper = () => {
+const RoomWrapper = ({leaveRoomCallback}) => {
     const navigate = useNavigate();
     const { roomCode } = useParams();
-    return <Room roomCode={roomCode} navigate={navigate} />;
+    return <Room roomCode={roomCode} navigate={navigate} leaveRoomCallback={leaveRoomCallback} />;
 };
 
 export default RoomWrapper;

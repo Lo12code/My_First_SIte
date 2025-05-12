@@ -65,12 +65,7 @@ class HomePage extends Component{
                     } />
                     <Route path='/join' element={<RoomJoinPage />} />
                     <Route path='/create' element={<CreateRoomPageWrapper />} />
-                    <Route 
-                      path='/room/:roomCode'
-                      render={() => {
-                        return <RoomWrapper {...props} leaveRoomCallback={this.clearRoomCode} />
-                      }}
-                    />
+                    <Route path='/room/:roomCode' element={<RoomWrapper leaveRoomCallback={this.clearRoomCode} />} />
                 </Routes>
         );
     }
