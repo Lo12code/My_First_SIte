@@ -10,7 +10,7 @@ export default class App extends Component {
 
     render() {
         return (<div className='center'>
-            <Router basename='frontend/'>
+            <Router basename='/'>
             <HomePageWrapper />
             </Router>
         </div>);
