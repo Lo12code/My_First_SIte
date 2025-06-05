@@ -1,0 +1,43 @@
+# docker-compose.dev.yml - For Development Environment Only
+
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-myuser_dev}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-mydb_dev}
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    expose:
+      - 5432
+    restart: unless-stopped
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - media_dev_volume:/code/mediafiles
+    ports:
+      - '8000:8000'
+    expose:
+      - 8000
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG:-True}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+  media_dev_volume: # Uncomment if you need a separate media volume for dev
+
