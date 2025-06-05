@@ -28,7 +28,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 debug_env_value = os.environ.get('DJANGO_DEBUG', 'False')
 DEBUG = debug_env_value.lower() in ('true', '1')
 
-ALLOWED_HOSTS = []
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+
 
 
 # Application definition
@@ -85,7 +87,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
+        'HOST': os.environ.get('POSTGRES_PYTHON_HOST'),
         'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }

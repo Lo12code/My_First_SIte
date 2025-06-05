@@ -9,8 +9,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
     restart: unless-stopped
 
   web:
@@ -26,7 +24,7 @@ services:
       - db
     environment:
       DATABASE_URL: ${DATABASE_URL}
-      SECRET_KEY: $(DJANGO_SECRET_KEY)
+      SECRET_KEY: ${DJANGO_SECRET_KEY}
       DEBUG: ${DJANGO_DEBUG:-False}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
       DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
