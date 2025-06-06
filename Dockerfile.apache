@@ -11,7 +11,6 @@ RUN apt-get update && \
 RUN a2enmod ssl && \
     a2enmod rewrite
 
-RUN service restart apache2
 # Expose HTTP (80) and HTTPS (443) ports
 EXPOSE 80 443
 
