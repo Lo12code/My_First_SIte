@@ -29,22 +29,31 @@ services:
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
       DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
     restart: unless-stopped
-
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    command: npm run build
+    volumes:
+      - ./frontend:/frontend
   apache:
-    image: httpd:2.4
+    build:
+      context: .
+      dockerfile: Dockerfile.apache
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - /etc/apache2:/usr/local/apache2/conf:ro
-      - /etc/apache2/apache2.conf:/usr/local/apache2/conf/httpd.conf:ro
-      - /etc/apache2/sites-enabled:/usr/local/apache2/conf/sites-enabled:ro
-      - /etc/apache2/mods-enabled:/usr/local/apache2/conf/mods-enabled:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./apache-config:/etc/apache2:ro
+      - ./ssl-certs:/etc/ssl/certs:ro
+      - ./letsencrypt:/etc/letsencrypt:ro
       - static_volume:/var/www/html/static
 
     depends_on:
       - web
+    environment:
+      - VIRTUAL_HOST=lorenzorangel.com.br
+      - VIRTUAL_PORT=443
     restart: unless-stopped
 
 volumes:
