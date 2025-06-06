@@ -1,5 +1,5 @@
 # Use an official Apache image
-FROM httpd:2.4
+FROM apache2:2.4
 
 # Install mod_ssl and mod_rewrite for SSL support
 RUN apt-get update && \
