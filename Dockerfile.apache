@@ -9,7 +9,10 @@ RUN apt-get update && \
 
 # Enable SSL and Rewrite modules using a2enmod
 RUN a2enmod ssl && \
-    a2enmod rewrite
+    a2enmod rewrite && \
+    a2enmod proxy && \
+    a2enmod proxy_http && \
+    a2enmod headers
 
 # Expose HTTP (80) and HTTPS (443) ports
 EXPOSE 80 443
