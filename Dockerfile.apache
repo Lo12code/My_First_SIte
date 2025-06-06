@@ -1,20 +1,15 @@
-# Use the official Apache HTTP Server image (Alpine-based)
+# Use the official Apache HTTP Server image (Debian-based)
 FROM httpd:2.4
 
 # Install required packages for mod_ssl and mod_rewrite
-RUN apk update && \
-    apk add --no-cache openssl apache2-utils && \
-    apk add --no-cache --virtual .build-deps gcc musl-dev make && \
-    apk add apache2 mod_ssl && \
-    apk del .build-deps
+RUN apt-get update && \
+    apt-get install -y openssl apache2-utils && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Enable SSL and Rewrite modules
-RUN sed -i '/#LoadModule ssl_module modules\/mod_ssl.so/s/^#//g' /etc/httpd/httpd.conf && \
-    sed -i '/#LoadModule rewrite_module modules\/mod_rewrite.so/s/^#//g' /etc/httpd/httpd.conf
-
-# Copy Apache configuration and SSL certificates into the container
-COPY ./apache-config /etc/apache2/sites-available/
-COPY ./ssl-certs /etc/ssl/certs/
+# Enable SSL and Rewrite modules using a2enmod
+RUN a2enmod ssl && \
+    a2enmod rewrite
 
 # Expose HTTP (80) and HTTPS (443) ports
 EXPOSE 80 443
