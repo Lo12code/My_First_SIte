@@ -46,6 +46,7 @@ services:
     volumes:
       - ./apache-config:/etc/apache2:ro
       - ./ssl-certs:/etc/ssl/certs:ro
+      - ./ssl-private:/etc/ssl/private:ro
       - ./letsencrypt:/etc/letsencrypt:ro
       - static_volume:/var/www/html/static
 
