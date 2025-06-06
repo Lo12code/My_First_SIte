@@ -13,7 +13,7 @@ services:
 
   web:
     build: .
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn racjdjangoapp.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn racjdjangoapp.wsgi:application --bind 0.0.0.0:8000 --workers 3"
     volumes:
       - static_volume:/code/staticfiles
       - media_volume:/code/mediafiles
