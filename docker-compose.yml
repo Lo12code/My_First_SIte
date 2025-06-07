@@ -33,7 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    command: npm run start
+    command: npm run build
     volumes:
       - ./frontend:/frontend
     environment:
