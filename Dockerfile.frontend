@@ -1,7 +1,7 @@
 # Dockerfile - Frontend (React Application)
 
 # 1. Imagem base do Node.js
-FROM node:24
+FROM node:24.1
 ENV NODE_VERSION 24.1.0
 
 RUN apt-get update && \
@@ -25,3 +25,5 @@ COPY frontend/package.json frontend/package-lock.json /frontend/
 RUN npm install
 
 COPY frontend /frontend/
+
+RUN npm run build

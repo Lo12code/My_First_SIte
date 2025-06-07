@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack watch --mode development",
-    "build": "webpack --mode production",
+    "build": "react-scripts build",
     "start": "webpack serve --mode development --open"
   },
   "keywords": [],
@@ -18,7 +18,8 @@
     "@babel/preset-react": "^7.26.3",
     "babel-loader": "^10.0.0",
     "webpack": "^5.99.6",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   },
   "dependencies": {
     "@babel/plugin-transform-class-properties": "^7.25.9",
@@ -27,8 +28,8 @@
     "@mui/material": "^6.4.10",
     "dotenv": "^16.5.0",
     "nvm": "^0.0.4",
-    "react-router-dom": "^7.4.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.4.0"
   }
 }
