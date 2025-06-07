@@ -28,4 +28,4 @@ COPY frontend /frontend/
 
 RUN npm run build
 
-
+CMD ["npm", "start"]
