@@ -14,6 +14,8 @@ RUN a2enmod ssl && \
     a2enmod proxy_http && \
     a2enmod headers
 
+RUN service apache2 restart
+
 # Expose HTTP (80) and HTTPS (443) ports
 EXPOSE 80 443
 
