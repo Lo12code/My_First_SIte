@@ -8,6 +8,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "./static/frontend"),
     filename: "[name].js",
+    clean: true,
   },
   mode: process.env.NODE_ENV || "development", 
   module: {
