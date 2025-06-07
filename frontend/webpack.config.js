@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+require('dotenv').config();
 
 module.exports = {
   entry: "./src/index.js",
@@ -7,6 +8,7 @@ module.exports = {
     path: path.resolve(__dirname, "./static/frontend"),
     filename: "[name].js",
   },
+  mode: process.env.NODE_ENV || "development", 
   module: {
     rules: [
       {
@@ -21,9 +23,12 @@ module.exports = {
   optimization: {
     minimize: true,
   },
+  resolve: {
+    extensions: [".js", ".jsx"],  // Ensure Webpack resolves .jsx files
+  },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("development")
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
     }),
   ],
 };

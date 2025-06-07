@@ -36,6 +36,8 @@ services:
     command: npm run build
     volumes:
       - ./frontend:/frontend
+    environment:
+      - NODE_ENV=production
   apache:
     build:
       context: .
