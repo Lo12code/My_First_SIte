@@ -54,6 +54,7 @@ services:
       - static_volume:/var/www/html/static
     depends_on:
       - frontend
+    hostname: lorenzorangel.com.br
     environment:
       - VIRTUAL_HOST=lorenzorangel.com.br
       - VIRTUAL_PORT=443
