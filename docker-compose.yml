@@ -39,7 +39,6 @@ services:
       - react_build_volume:/usr/share/nginx/html
     depends_on:
       - web
-    restart: "no"
   apache:
     build:
       context: .
