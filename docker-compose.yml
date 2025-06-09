@@ -47,7 +47,7 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - ./apache-config:/etc/apache2:ro
+      - ./apache-config:/etc/apache2
       - ./ssl-certs:/etc/ssl/certs:ro
       - ./ssl-private:/etc/ssl/private:ro
       - ./letsencrypt:/etc/letsencrypt:ro
