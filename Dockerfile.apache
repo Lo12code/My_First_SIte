@@ -7,18 +7,18 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Enable SSL and Rewrite modules using a2enmod
-RUN a2enmod ssl && \
-    a2enmod rewrite && \
-    a2enmod proxy && \
-    a2enmod proxy_http && \
-    a2enmod headers && \
-    a2enmod proxy_balancer
+COPY ./apache-config/sites-available/000-default-le-ssl.conf /etc/apache2/sites-available/000-default-le-ssl.conf
+COPY ./apache-config/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./apache-config/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+COPY ./apache-config/apache2.conf /etc/apache2/apache2.conf
 
-RUN service apache2 restart
+# Enable SSL and Rewrite modules using a2enmod
+RUN a2enmod ssl rewrite proxy proxy_http headers proxy_balancer && \
+    a2ensite 000-default-le-ssl.conf
+
 
 # Expose HTTP (80) and HTTPS (443) ports
 EXPOSE 80 443
 
 # Command to run Apache in the foreground
-CMD ["httpd-foreground"]
+CMD ["apache2ctl", "-D", "FOREGROUND"]
