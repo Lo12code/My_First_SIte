@@ -47,9 +47,9 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - ./ssl-certs:/etc/ssl/certs:ro
-      - ./ssl-private:/etc/ssl/private:ro
-      - ./letsencrypt:/etc/letsencrypt:ro
+      - ./letsencrypt/live/lorenzorangel.com.br:/etc/letsencrypt/live/lorenzorangel.com.br:ro
+      - ./letsencrypt/archive/lorenzorangel.com.br:/etc/letsencrypt/archive/lorenzorangel.com.br:ro
+      - ./letsencrypt/options-ssl-apache.conf:/etc/letsencrypt/options-ssl-apache.conf:ro
       - static_volume:/var/www/html/static
     depends_on:
       - frontend
