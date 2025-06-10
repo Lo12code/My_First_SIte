@@ -19,8 +19,8 @@ services:
       - media_volume:/code/mediafiles
       - react_build_volume:/code/reacjdjangoapp/static/react_build
       - .:/code
-    ports:
-      - "8000:8000"  
+    expose:
+      - 8000
     depends_on:
       - db
     environment:
