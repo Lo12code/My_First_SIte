@@ -44,7 +44,6 @@ services:
     ports:
       - '80:80'
       - '443:443'
-    command: apache2ctl start
     volumes:
       - static_volume:/var/www/html/static
     depends_on:

@@ -22,3 +22,4 @@ RUN a2ensite 000-default-le-ssl
 # Expose HTTP (80) and HTTPS (443) ports
 EXPOSE 80 443
 
+CMD ["apache2ctl", "-D", "FOREGROUND"]
