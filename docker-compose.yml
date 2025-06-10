@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:14
@@ -46,10 +44,8 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    command: apache2ctl start
     volumes:
-      - ./letsencrypt/live/lorenzorangel.com.br:/etc/letsencrypt/live/lorenzorangel.com.br:ro
-      - ./letsencrypt/archive/lorenzorangel.com.br:/etc/letsencrypt/archive/lorenzorangel.com.br:ro
-      - ./letsencrypt/options-ssl-apache.conf:/etc/letsencrypt/options-ssl-apache.conf:ro
       - static_volume:/var/www/html/static
     depends_on:
       - frontend
