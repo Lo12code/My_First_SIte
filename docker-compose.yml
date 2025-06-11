@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile.frontend
     volumes:
       - ./frontend:/frontend
-      - react_build_volume:/usr/share/nginx/html
+      - react_build_volume:/usr/share/nginx/html/static/frontend
     depends_on:
       - web
   apache:
