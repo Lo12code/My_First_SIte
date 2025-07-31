@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {Grid, Button, Typography} from "@mui/material";
+import {Grid, Button, Typography, getBottomNavigationUtilityClass} from "@mui/material";
 
 
 class Room extends Component {
@@ -10,9 +10,11 @@ class Room extends Component {
             votesToSkip: 2,
             guestCanPause: false,
             isHost: false,
+            showSettings: false,
         };
         this.getRoomDetails();
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
+        this.updateShowSettings = this.updateShowSettings.bind(this);
     }
 
     setSessionCurrentRoom() {
@@ -49,6 +51,20 @@ class Room extends Component {
             });
     }
 
+    updateShowSettings(value){
+        this.setState({
+            showSettings: value,
+        });
+    }
+
+    renderSettingsButton(){
+        return(
+            <Grid item xs={12} align='center'>
+                <Button variant='contained' color='primary' onClick={() => this.updateShowSettings(true)}>Settings</Button>
+            </Grid>
+        );
+    }
+
     render(){
         return ( <Grid container spacing={1}>
             <Grid item xs={12} align="center">
@@ -71,6 +87,7 @@ class Room extends Component {
                     Host: {this.state.isHost.toString()}
                 </Typography>
             </Grid>
+            {this.state.isHost ? this.renderSettingsButton() : null}
             <Grid item xs={12} align="center">
                 <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
                     Leave room
