@@ -14,11 +14,8 @@ class Room extends Component {
         };
         this.getRoomDetails();
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
+        this.renderSettingsButton = this.renderSettingsButton.bind(this);
         this.updateShowSettings = this.updateShowSettings.bind(this);
-    }
-
-    setSessionCurrentRoom() {
-
     }
 
     getRoomDetails(){
