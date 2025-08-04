@@ -1,0 +1,13 @@
+FROM node:24.1 as builder
+ENV NODE_VERSION 24.1.0
+
+WORKDIR /frontend
+
+RUN npm install -g npm@11.4.1
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "dev"]

@@ -23,6 +23,7 @@ class CreateRoomPage extends Component{
         this.handleRoomButtonPressed = this.handleRoomButtonPressed.bind(this);
         this.handleVotesChange = this.handleVotesChange.bind(this);
         this.handleGuestCanPauseChange = this.handleGuestCanPauseChange.bind(this);
+        this.handleUpdateButtonPressed = this.handleUpdateButtonPressed.bind(this);
     }
 
     handleVotesChange(e){
@@ -52,11 +53,65 @@ class CreateRoomPage extends Component{
             .catch((error) => console.error("Error creating room:", error));
     }
 
+    renderCreateButtons() {
+        return (
+          <Grid container spacing={1}>
+            <Grid item xs={12} align="center">
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={this.handleRoomButtonPressed}
+              >
+                Create A Room
+              </Button>
+            </Grid>
+            <Grid item xs={12} align="center">
+              <Button color="secondary" variant="contained" to="/" component={Link}>
+                Back
+              </Button>
+            </Grid>
+          </Grid>
+        );
+    }
+
+    handleUpdateButtonPressed() {
+        const requestOptions = {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            votes_to_skip: this.state.votesToSkip,
+            guest_can_pause: this.state.guestCanPause,
+            code: this.props.roomCode,
+          }),
+        };
+        fetch("/api/update-room", requestOptions).then((response) => {
+          this.props.updateCallback();
+        });
+    }
+    
+
+    renderUpdateButtons() {
+        return (
+            <Grid container spacing={1}>
+                <Grid item xs={12} align="center">
+                    <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={this.handleUpdateButtonPressed}
+                    >
+                    Update Room
+                    </Button>
+                </Grid>
+            </Grid>
+        );
+    }
+
     render(){
+        const title = this.props.update ? "Update Room" : "Create a Room";
         return (
             <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12} align="center">
-                    <Typography component="h4" variant="h4">Create a Room</Typography>
+                    <Typography component="h4" variant="h4">{this.props.update ? "Update Room" : "Create a Room"}</Typography>
                 </Grid>
                 <Grid item xs={12} align="center">
                     <FormControl component="fieldset">
@@ -94,26 +149,16 @@ class CreateRoomPage extends Component{
                         </FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} align="center">
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={this.handleRoomButtonPressed}
-                    >Create a Room
-                    </Button>
-                </Grid>
-                <Grid item xs={12} align="center">
-                    <Button color="secondary" variant="contained" to="/" component={Link}>Back</Button>
-                </Grid>
+                {this.props.update ? this.renderUpdateButtons() : this.renderCreateButtons()}
             </Grid>
         );
     }
 }
 
 
-const CreateRoomPageWrapper = () => {
+const CreateRoomPageWrapper = (props) => {
     const navigate = useNavigate();
-    return <CreateRoomPage navigate={navigate} />;
+    return <CreateRoomPage {...props} navigate={navigate} />;
 };
 
 export default CreateRoomPageWrapper;
