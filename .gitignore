@@ -117,6 +117,7 @@ ipython_config.py
 .pdm-python
 .pdm-build/
 apache/
+nginx/
 ssl-certs/
 apache-config/
 letsencrypt/
@@ -183,3 +184,4 @@ frontend/static/frontend/main.js.LICENSE.txt
 
 www/
 .vscode/
+kubernets.yaml
