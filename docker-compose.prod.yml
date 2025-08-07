@@ -41,7 +41,7 @@ services:
       context: ./frontend/
       dockerfile: Dockerfile.prod
     volumes:
-      - react_build_volume:./static/frontend
+      - react_build_volume:/static/frontend
   proxy:
     image: nginx:1.25.3-alpine
     volumes:
