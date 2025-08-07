@@ -9,7 +9,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: ./reacjdjangoapp/Dockerfile.prod
     command: >
       sh -c "python manage.py migrate --noinput && \
         python manage.py collectstatic --noinput && \
@@ -36,10 +38,10 @@ services:
     restart: unless-stopped
   frontend:
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile.prod
+      context: ./frontend/
+      dockerfile: Dockerfile.prod
     volumes:
-      - react_build_volume:/usr/share/nginx/html/static/frontend
+      - react_build_volume:./static/frontend
   proxy:
     image: nginx:1.25.3-alpine
     volumes:
@@ -58,31 +60,3 @@ volumes:
   postgres_data:
   static_volume:
   react_build_volume:
-
-
-#   backend:
-#     build:
-#       context: .
-#       dockerfile: ./racjdjangoapp/Dockerfile.prod
-#     volumes:
-#       - static_volume:/code/staticfiles_collected
-#     environment:
-#       - DJANGO_DEBUG=${DJANGO_DEBUG}
-#       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-#       - POSTGRES_USER=${POSTGRES_USER}
-#       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-#       - POSTGRES_DB=${POSTGRES_DB}
-#       - POSTGRES_HOST=${POSTGRES_HOST}
-#       - POSTGRES_PORT=${POSTGRES_PORT}
-#       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-#       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-#       - NODE_ENV=${NODE_ENV}
-#     depends_on:
-#       - db
-#       - frontend
-#     restart: always
-
-# volumes:
-#   postgres_data:
-#   static_volume:
-#   react_build_volume:
