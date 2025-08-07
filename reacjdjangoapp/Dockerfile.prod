@@ -1,19 +1,8 @@
 FROM python:3.11-slim-bullseye
 
-# Set environment variables to prevent Python from writing pyc files and buffering stdout/stderr
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    # Add system dependencies here, e.g.:
-    # build-essential \
-    libpq-dev \
-    # python3-dev # Sometimes needed for C extensions
-    # netcat # Useful for waiting for DB
-    && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends libpq-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /code
 
@@ -22,19 +11,3 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY . /code/
-
-RUN python manage.py collectstatic --clear --noinput
-
-EXPOSE 8000
-
-
-# ============================
-# Dockerfile.prod.backend
-# ============================
-# FROM python:3.12-slim
-# WORKDIR /code
-# COPY requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
-# COPY . .
-# RUN python manage.py collectstatic --noinput
-# CMD ["gunicorn", "reacjdjangoapp.wsgi:application", "--bind", "0.0.0.0:8000"]
