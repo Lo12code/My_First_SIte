@@ -185,3 +185,5 @@ frontend/static/frontend/main.js.LICENSE.txt
 www/
 .vscode/
 kubernets.yaml
+frontend/static/frontend/
+staticfiles_collected/
