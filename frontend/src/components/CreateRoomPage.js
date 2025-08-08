@@ -12,13 +12,21 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 
 class CreateRoomPage extends Component{
-    defaultVotes = 2;
+    static defaultProps = {
+        votesToSkip: 2,
+        guestCanPause: true,
+        update: false,
+        roomCode: null,
+        updateCallback: () => {},
+    };
 
     constructor(props){
         super(props);
         this.state = {
-            guestCanPause: true,
-            votesToSkip: this.defaultVotes,
+            guestCanPause: this.props.guestCanPause,
+            votesToSkip: this.props.votesToSkip,
+            errorMsg: "",
+            successMsg: "",
         };
         this.handleRoomButtonPressed = this.handleRoomButtonPressed.bind(this);
         this.handleVotesChange = this.handleVotesChange.bind(this);
@@ -82,10 +90,22 @@ class CreateRoomPage extends Component{
             votes_to_skip: this.state.votesToSkip,
             guest_can_pause: this.state.guestCanPause,
             code: this.props.roomCode,
+            errorMsg: "",
+            successMsg: "",
           }),
         };
+
         fetch("/api/update-room", requestOptions).then((response) => {
-          this.props.updateCallback();
+            if (response.ok) {
+                this.setState({
+                    successMsg: "Room updated successfully!",
+                });
+            } else {
+                this.setState({
+                    errorMsg: "Error updating room...",
+                });
+            }
+            this.props.updateCallback();
         });
     }
     
@@ -138,7 +158,7 @@ class CreateRoomPage extends Component{
                             required={true}
                             type="number"
                             onChange={this.handleVotesChange}
-                            defaultValue={this.defaultVotes}
+                            defaultValue={this.state.votesToSkip}
                             inputProps={{
                                 min: 1,
                                 style: {textAlign: "center"},
