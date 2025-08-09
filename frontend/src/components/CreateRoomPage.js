@@ -9,6 +9,7 @@ import {Link, useNavigate} from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { Alert, Collapse } from '@mui/material';
 
 
 class CreateRoomPage extends Component{
@@ -131,14 +132,27 @@ class CreateRoomPage extends Component{
         return (
             <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12} align="center">
-                    <Typography component="h4" variant="h4">{this.props.update ? "Update Room" : "Create a Room"}</Typography>
+                    <Collapse in={this.state.errorMsg != "" || this.state.successMsg != ""}>
+                        {this.state.successMsg != "" ? (
+                            <Alert severity="success" onClose={() => {this.setState({successMsg: ""})}}>
+                                {this.state.successMsg}
+                            </Alert>
+                        ) : (
+                            <Alert severity="error" onClose={() => {this.setState({errorMsg: ""})}}>
+                                {this.state.errorMsg}
+                            </Alert>
+                        )}
+                    </Collapse>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <Typography component="h4" variant="h4">{title}</Typography>
                 </Grid>
                 <Grid item xs={12} align="center">
                     <FormControl component="fieldset">
                         <FormHelperText sx={{ textAlign: "center" }}>
                                 Guest Control of Playback State
                         </FormHelperText>
-                        <RadioGroup row defaultValue="true" onChange={this.handleGuestCanPauseChange}>
+                        <RadioGroup row defaultValue={this.props.guestCanPause.toString()} onChange={this.handleGuestCanPauseChange}>
                             <FormControlLabel value="true"
                                 control={<Radio color="primary" />}
                                 label="Play/Pause"
