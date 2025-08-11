@@ -17,10 +17,11 @@ module.exports = {
   devServer: {
     proxy: [
       {
-        context: ['/api'],
+        context: ['/api', '/spotify'],
         target: 'http://backend:8000',
         changeOrigin: true,
-      },
+        logLevel: 'debug',
+      }
     ],
     port: 8080, // você pode explicitar a porta se quiser
     hot: true,  // para hot reloading

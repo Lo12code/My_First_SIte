@@ -2,10 +2,10 @@ from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from requests import Request
+from requests import Request, post
 
 from .credentials import REDIRECT_URL, CLIENT_ID, CLIENT_SECRET
-from .utils import update_or_create_user_token
+from .utils import update_or_create_user_token, is_spotify_authenticated
 
 
 class AuthUrl(APIView):
@@ -24,16 +24,17 @@ class AuthUrl(APIView):
                 'client_id': CLIENT_ID
             }
         ).prepare().url
-
+        print(REDIRECT_URL)
         return Response({'url': url}, status=status.HTTP_200_OK)
 
 class SpotifyCallback(APIView):
     def get(self, request, format=None):
         code = request.GET.get('code')
         error = request.GET.get('error')
+        if error:
+            return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
 
-        response = Request(
-            'POST',
+        response = post(
             'https://accounts.spotify.com/api/token',
             data={
                 'grant_type': 'authorization_code',
@@ -42,13 +43,12 @@ class SpotifyCallback(APIView):
                 'client_id': CLIENT_ID,
                 'client_secret': CLIENT_SECRET,
             }
-        ).prepare().send()
+        ).json()
 
         access_token = response.get('access_token')
         token_type = response.get('token_type')
         refresh_token = response.get('refresh_token')
         expires_in = response.get('expires_in')
-        error = response.get('error')
 
         if not request.session.exists(request.session.session_key):
             request.session.create()
@@ -62,4 +62,8 @@ class SpotifyCallback(APIView):
         )
 
         return redirect('frontend:')
-    
+
+class IsAuthenticated(APIView):
+    def get(self, request, format=None):
+        is_authenticated = is_spotify_authenticated(self.request.session.session_key)
+        return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
