@@ -11,6 +11,7 @@ module.exports = {
     path: path.resolve(__dirname, "static/frontend"),
     filename: "[name].js",
     clean: true,
+    publicPath: "/", 
   },
   mode: isProduction ? "production" : "development",
   devtool: isProduction ? false : "eval-source-map",

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {Grid, Button, Typography, Alert} from "@mui/material";
 import CreateRoomPageWrapper from "./CreateRoomPage";
+import MusicPlayer from "./MusicPlayer";
 
 
 class Room extends Component {
@@ -13,6 +14,8 @@ class Room extends Component {
             isHost: false,
             showSettings: false,
             isSpotifyAuthenticated: false,
+            authCheckedOnce: false,
+            song: {},
         };
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
         this.renderSettingsButton = this.renderSettingsButton.bind(this);
@@ -20,9 +23,18 @@ class Room extends Component {
         this.updateShowSettings = this.updateShowSettings.bind(this);
         this.getRoomDetails = this.getRoomDetails.bind(this);
         this.authenticateSpotify = this.authenticateSpotify.bind(this);
+        this.getCurrentSong = this.getCurrentSong.bind(this);
         this.getRoomDetails();
     }
 
+    // componentDidMount() {
+    //     this.interval = setInterval(this.getCurrentSong, 1000);
+    // }
+    
+    // componentWillUnmount() {
+    //     clearInterval(this.interval);
+    // }
+    
     getRoomDetails(){
         fetch('/api/get-room' + '?code=' + this.props.roomCode)
             .then((response) => {
@@ -37,10 +49,13 @@ class Room extends Component {
                     votesToSkip: data.votes_to_skip,
                     guestCanPause: data.guest_can_pause,
                     isHost: data.is_host,
+                },
+                () => {
+                    if (data.is_host && !this.state.authCheckedOnce) {
+                        console.log('tamo ae')
+                        this.setState({ authCheckedOnce: true }, this.authenticateSpotify);
+                    }
                 });
-                if(data.is_host){
-                    this.authenticateSpotify();
-                }
             });
     }
 
@@ -51,6 +66,7 @@ class Room extends Component {
                 this.setState({
                     isSpotifyAuthenticated: data.status
                 });
+                console.log("is authenticated: " + data.status)
                 if(!data.status){
                     fetch('/spotify/get-auth-url')
                         .then((response) => response.json())
@@ -60,6 +76,16 @@ class Room extends Component {
                         });
                 }
             });
+    }
+
+    getCurrentSong(){
+        fetch('/spotify/current-song').then((response) => {
+            if (!response.ok) {
+                return {};
+            } else {
+                return response.json();
+            }
+        }).then((data) => {this.setState({song: data})});
     }
 
     leaveButtonPressed(){
@@ -117,28 +143,17 @@ class Room extends Component {
         if (this.state.showSettings){
             return this.renderSettings();
         }
-        return ( <Grid container spacing={1}>
+        return ( 
+        <Grid container spacing={1}>
             <Grid item xs={12} align="center">
                 <Typography variant="h4" component="h4">
                     Code: {this.props.roomCode}
                 </Typography>
             </Grid>
-            <Grid item xs={12} align="center">
-                <Typography variant="h6" component="h6">
-                    Votes: {this.state.votesToSkip}
-                </Typography>
+            <Grid item xs={4} align="center">
+                <MusicPlayer {...this.state.song} />
+                {this.state.isHost ? this.renderSettingsButton() : null}
             </Grid>
-            <Grid item xs={12} align="center">
-                <Typography variant="h6" component="h6">
-                    Guest can pause: {this.state.guestCanPause.toString()}
-                </Typography>
-            </Grid>
-            <Grid item xs={12} align="center">
-                <Typography variant="h6" component="h6">
-                    Host: {this.state.isHost.toString()}
-                </Typography>
-            </Grid>
-            {this.state.isHost ? this.renderSettingsButton() : null}
             <Grid item xs={12} align="center">
                 <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
                     Leave room
