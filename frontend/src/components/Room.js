@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {Grid, Button, Typography, Alert} from "@mui/material";
+import { Container, Grid, Button, Typography, Alert } from "@mui/material";
 import CreateRoomPageWrapper from "./CreateRoomPage";
 import MusicPlayer from "./MusicPlayer";
 
@@ -27,13 +27,13 @@ class Room extends Component {
         this.getRoomDetails();
     }
 
-    // componentDidMount() {
-    //     this.interval = setInterval(this.getCurrentSong, 1000);
-    // }
+    componentDidMount() {
+        this.interval = setInterval(this.getCurrentSong, 10000);
+    }
     
-    // componentWillUnmount() {
-    //     clearInterval(this.interval);
-    // }
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
     
     getRoomDetails(){
         fetch('/api/get-room' + '?code=' + this.props.roomCode)
@@ -52,7 +52,6 @@ class Room extends Component {
                 },
                 () => {
                     if (data.is_host && !this.state.authCheckedOnce) {
-                        console.log('tamo ae')
                         this.setState({ authCheckedOnce: true }, this.authenticateSpotify);
                     }
                 });
@@ -66,12 +65,10 @@ class Room extends Component {
                 this.setState({
                     isSpotifyAuthenticated: data.status
                 });
-                console.log("is authenticated: " + data.status)
                 if(!data.status){
                     fetch('/spotify/get-auth-url')
                         .then((response) => response.json())
                         .then((data) => {
-                            console.log('got here')
                             window.location.replace(data.url);
                         });
                 }
@@ -144,14 +141,16 @@ class Room extends Component {
             return this.renderSettings();
         }
         return ( 
-        <Grid container spacing={1}>
+        <Grid container spacing={3}>
             <Grid item xs={12} align="center">
                 <Typography variant="h4" component="h4">
                     Code: {this.props.roomCode}
                 </Typography>
             </Grid>
-            <Grid item xs={4} align="center">
+            <Grid item xs={12} align="center">
                 <MusicPlayer {...this.state.song} />
+            </Grid>
+            <Grid item xs={12} align="center">
                 {this.state.isHost ? this.renderSettingsButton() : null}
             </Grid>
             <Grid item xs={12} align="center">
