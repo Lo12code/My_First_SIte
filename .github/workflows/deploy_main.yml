@@ -1,0 +1,40 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
+
+# Evita deploys concorrentes na mesma branch
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      DEPLOY_DIR: /home/ubuntu/spotify_room/My_First_SIte
+      COMPOSE_FILE: docker-compose.prod.yml
+    steps:
+      # 👉 Opção simples usando a action appleboy/ssh-action
+      - name: SSH and deploy (docker compose up -d)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -Eeuo pipefail
+            cd "$DEPLOY_DIR"
+
+            git fetch --all --prune
+            git reset --hard origin/main 
+
+            docker compose -f "$COMPOSE_FILE" up -d --remove-orphans
+            docker image prune -f
