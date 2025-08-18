@@ -78,6 +78,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'reacjdjangoapp.wsgi.application'
 
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+   ]
+}
+
+if DEBUG:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"].append(
+        "rest_framework.renderers.BrowsableAPIRenderer"
+    )
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

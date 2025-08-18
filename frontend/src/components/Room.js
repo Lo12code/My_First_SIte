@@ -59,14 +59,14 @@ class Room extends Component {
     }
 
     authenticateSpotify(){
-        fetch('/spotify/is-authenticated')
+        fetch('/spotify/is-authenticated', {headers: { "Accept": "application/json" }})
             .then((response) => response.json())
             .then((data) => {
                 this.setState({
                     isSpotifyAuthenticated: data.status
                 });
                 if(!data.status){
-                    fetch('/spotify/get-auth-url')
+                    fetch('/spotify/get-auth-url', {headers: { "Accept": "application/json" }})
                         .then((response) => response.json())
                         .then((data) => {
                             window.location.replace(data.url);
