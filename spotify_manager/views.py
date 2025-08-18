@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from rest_framework import status
+from rest_framework.renderers import JSONRenderer 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from requests import Request, post
@@ -10,6 +11,7 @@ from .utils import update_or_create_user_token, is_spotify_authenticated, execut
 
 
 class AuthUrl(APIView):
+    renderer_classes = [JSONRenderer]
     def get(self, request, format=None):
         scopes = 'user-read-playback-state' \
         ' user-modify-playback-state' \
@@ -65,11 +67,13 @@ class SpotifyCallback(APIView):
         return redirect('/')
 
 class IsAuthenticated(APIView):
+    renderer_classes = [JSONRenderer]
     def get(self, request, format=None):
         is_authenticated = is_spotify_authenticated(self.request.session.session_key)
         return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
 
 class CurrentSong(APIView):
+    renderer_classes = [JSONRenderer]
     def get(self, request, format=None):
         room_code = self.request.session.get('room_code')
         room = Room.objects.filter(code=room_code).first()
