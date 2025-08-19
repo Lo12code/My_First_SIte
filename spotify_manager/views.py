@@ -9,9 +9,9 @@ from api.models import Room
 from .credentials import REDIRECT_URL, CLIENT_ID, CLIENT_SECRET
 from .utils import update_or_create_user_token, \
     is_spotify_authenticated, \
-    execute_spotify_api_request \
+    execute_spotify_api_request, \
     play_song, \
-    pause_song
+    pause_song \
 
 
 class AuthUrl(APIView):
