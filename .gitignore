@@ -189,3 +189,4 @@ www/
 kubernets.yaml
 frontend/static/frontend/
 staticfiles_collected/
+docker-compose.prod.yml
