@@ -1,5 +1,6 @@
 from datetime import timedelta
 from django.utils import timezone
+import logging
 from requests import post, put, get
 
 from .credentials import CLIENT_ID, CLIENT_SECRET
@@ -7,12 +8,14 @@ from .models import SpotifyToken
 
 
 BASE_URL = "https://api.spotify.com/v1/me/"
+logger = logging.getLogger(__name__)
 
 def get_user_tokens(session_id):
     user_tokens = SpotifyToken.objects.filter(user=session_id)
     if user_tokens.exists():
         return user_tokens[0]
     else:
+        logger.warning("Função get_user_tokens retornou None!!!")
         return None
 
 def update_or_create_user_token(
@@ -87,14 +90,18 @@ def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
 
     if post_:
         post_response = post(BASE_URL + endpoint, headers=header)
-    if put_:
+        logger.warning(post_response.text)
+    elif put_:
         put_response = put(BASE_URL + endpoint, headers=header)
-    
-    response = get(BASE_URL + endpoint, {}, headers=header)
-    try:
-        return response.json()
-    except:
-        return {"Error": "Something is wrong with the request!"}
+        logger.warning(put_response.text)
+    else:
+        response = get(BASE_URL + endpoint, {}, headers=header)
+        #logger.warning(response.text)
+        try:
+            return response.json()
+        except:
+            logger.warning('Não foi possivel converter a resposta em json.')
+            return {"Error": "Something is wrong with the request!"}
 
 def play_song(session_id):
     return execute_spotify_api_request(session_id, "player/play", put_=True)
