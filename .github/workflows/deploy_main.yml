@@ -17,8 +17,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
-      DEPLOY_DIR: /home/ubuntu/spotify_room/My_First_SIte
-      COMPOSE_FILE: docker-compose.prod.yml
+      DEPLOY_DIR: /root/spotify-project/My_First_SIte
+      COMPOSE_FILE: docker-compose.yml
     steps:
       # 👉 Opção simples usando a action appleboy/ssh-action
       - name: SSH and deploy (docker compose up -d)
