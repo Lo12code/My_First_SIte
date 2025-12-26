@@ -49,14 +49,14 @@ export default class MusicPlayer extends Component {
     return (
       <Card>
         <Grid container height="600px">
-          <Grid item justifyContent="flex-start" alignItems="center" xs={6}>
+          <Grid item justifyContent="flex-start" alignItems="center" xs={6} sx={{ height: "100%" }}>
               {this.props.image_url ? (
                 <img src={this.props.image_url} height="100%" width="100%" />
               ) : (
                 <Box width="100%" height="100%" bgcolor="#eee" />
               )}
           </Grid>
-          <Grid item xs={6} container direction="column" alignItems="center" justifyContent="center" spacing={1}>
+          <Grid item xs={6} container direction="column" alignItems="center" justifyContent="center" spacing={1} sx={{ height: "100%" }}>
             <Grid item>
               <Typography component="h5" variant="h5">
                 {this.props.title ? this.props.title : "No music playing"}
