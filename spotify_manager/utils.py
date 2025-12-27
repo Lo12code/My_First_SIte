@@ -96,7 +96,6 @@ def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
         logger.warning(put_response.text)
     else:
         response = get(BASE_URL + endpoint, {}, headers=header)
-        #logger.warning(response.text)
         try:
             return response.json()
         except:
