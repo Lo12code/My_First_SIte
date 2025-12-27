@@ -90,10 +90,8 @@ def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
 
     if post_:
         post_response = post(BASE_URL + endpoint, headers=header)
-        logger.warning(post_response.text)
     elif put_:
         put_response = put(BASE_URL + endpoint, headers=header)
-        logger.warning(put_response.text)
     else:
         response = get(BASE_URL + endpoint, {}, headers=header)
         try:
